@@ -22,16 +22,24 @@ class ProductController extends ApiController
             return $this->error([], '商品未上架');
         }
 
+        //评价
         $reviews = OrderItem::query()
             ->with(['order:id,user_id','order.user:id,name','productSku:id,title'])// 预先加载关联关系
             ->where('product_id', $product->id)
             ->whereNotNull('reviewed_at')// 筛选出已评价的
             ->orderBy('reviewed_at', 'desc')// 按评价时间倒序
             ->first();
+        //推荐
+        $similarProducts = Product::query()
+            ->where('id','<>',$product->id)
+            ->inRandomOrder()
+            ->take(mt_rand(3,6))
+            ->get();
+
         $product->reviews = $reviews;
         $product->price_max = $product->skus->max('price');
         $product->price_min = $product->skus->min('price');
-
+        $product->similar = $similarProducts;
         return $this->success($product);
     }
 }
