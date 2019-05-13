@@ -32,14 +32,15 @@ class ProductController extends ApiController
         //推荐
         $similarProducts = Product::query()
             ->where('id','<>',$product->id)
-            ->inRandomOrder()
-            ->take(mt_rand(3,6))
+            ->inRandomOrder()//随机排序
+            ->take(mt_rand(3,6))//随机取3-6条数据
             ->get();
 
         $product->reviews = $reviews;
-        $product->price_max = $product->skus->max('price');
-        $product->price_min = $product->skus->min('price');
+        $product->price_max = $product->skus->max('price');//商品最大价格
+        $product->price_min = $product->skus->min('price');//商品最小价格
         $product->similar = $similarProducts;
+        
         return $this->success($product);
     }
 }
