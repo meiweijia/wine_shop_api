@@ -24,23 +24,23 @@ class ProductController extends ApiController
 
         //评价
         $reviews = OrderItem::query()
-            ->with(['order:id,user_id','order.user:id,name','productSku:id,title'])// 预先加载关联关系
+            ->with(['order:id,user_id', 'order.user:id,name', 'productSku:id,title'])// 预先加载关联关系
             ->where('product_id', $product->id)
             ->whereNotNull('reviewed_at')// 筛选出已评价的
             ->orderBy('reviewed_at', 'desc')// 按评价时间倒序
             ->first();
         //推荐
         $similarProducts = Product::query()
-            ->where('id','<>',$product->id)
+            ->where('id', '<>', $product->id)//排除自己
             ->inRandomOrder()//随机排序
-            ->take(mt_rand(3,6))//随机取3-6条数据
+            ->take(mt_rand(3, 6))//随机取3-6条数据
             ->get();
 
         $product->reviews = $reviews;
         $product->price_max = $product->skus->max('price');//商品最大价格
         $product->price_min = $product->skus->min('price');//商品最小价格
         $product->similar = $similarProducts;
-        
+
         return $this->success($product);
     }
 }
