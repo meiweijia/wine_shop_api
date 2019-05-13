@@ -20,6 +20,7 @@ class Product extends Model
     ];
     protected $casts = [
         'on_sale' => 'boolean', // on_sale 是一个布尔类型的字段
+        'carousel' => 'array',
     ];
 
     public function scopeByIds($query, $ids)
