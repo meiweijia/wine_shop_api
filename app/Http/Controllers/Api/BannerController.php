@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class BannerController extends ApiController
 {
     public function index(Request $request){
-        $products = Banner::query()
+        $banners = Banner::query()
             ->get();
-        return $this->success($products);
+        return $this->success($banners);
     }
 }
