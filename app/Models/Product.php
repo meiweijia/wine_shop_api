@@ -69,4 +69,16 @@ class Product extends Model
                 return $properties->pluck('value')->all();
             });
     }
+
+    public function setCarouselAttribute($pictures)
+    {
+        if (is_array($pictures)) {
+            $this->attributes['carousel'] = json_encode($pictures);
+        }
+    }
+
+    public function getCarouselAttribute($pictures)
+    {
+        return json_decode($pictures, true);
+    }
 }
