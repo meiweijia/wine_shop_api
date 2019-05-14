@@ -29,4 +29,16 @@ class ProductSku extends Model
         }
         $this->increment('stock', $amount);
     }
+
+    public function setPriceAttribute($price)
+    {
+
+        $this->attributes['price'] = $price * 10;
+
+    }
+
+    public function getPriceAttribute($price)
+    {
+        return $price / 10;
+    }
 }

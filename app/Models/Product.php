@@ -70,15 +70,27 @@ class Product extends Model
             });
     }
 
-    public function setCarouselAttribute($pictures)
+    public function setCarouselAttribute($carousel)
     {
-        if (is_array($pictures)) {
-            $this->attributes['carousel'] = json_encode($pictures);
+        if (is_array($carousel)) {
+            $this->attributes['carousel'] = json_encode($carousel);
         }
     }
 
-    public function getCarouselAttribute($pictures)
+    public function getCarouselAttribute($carousel)
     {
-        return json_decode($pictures, true);
+        return json_decode($carousel, true);
+    }
+
+    public function setPriceAttribute($price)
+    {
+
+        $this->attributes['price'] = $price * 10;
+
+    }
+
+    public function getPriceAttribute($price)
+    {
+        return $price / 10;
     }
 }
