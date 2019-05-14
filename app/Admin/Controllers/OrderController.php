@@ -19,6 +19,7 @@ class OrderController extends Controller
      * Index interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function index(Content $content)
@@ -33,6 +34,7 @@ class OrderController extends Controller
      *
      * @param mixed $id
      * @param Content $content
+     *
      * @return Content
      */
     public function show(Order $order, Content $content)
@@ -48,6 +50,7 @@ class OrderController extends Controller
      *
      * @param mixed $id
      * @param Content $content
+     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -62,6 +65,7 @@ class OrderController extends Controller
      * Create interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function create(Content $content)
@@ -89,7 +93,7 @@ class OrderController extends Controller
         $grid->column('user.name', '买家');
         $grid->total_amount('总金额')->sortable();
         $grid->paid_at('支付时间')->sortable();
-        $grid->ship_status('物流')->display(function($value) {
+        $grid->ship_status('物流')->display(function ($value) {
             return Order::$shipStatusMap[$value];
         });
         //$grid->refund_status('退款状态')->display(function($value) {
@@ -109,7 +113,7 @@ class OrderController extends Controller
             });
         });
 
-        $grid->filter(function($filter){
+        $grid->filter(function ($filter) {
 
             // 去掉默认的id过滤器
             $filter->disableIdFilter();
@@ -117,7 +121,7 @@ class OrderController extends Controller
             // 在这里添加字段过滤器
             $filter->equal('no', '订单号');
 
-            $filter->equal('物流状态')->select(Order::$shipStatusMap);
+            $filter->equal('ship_status', '物流状态')->select(Order::$shipStatusMap);
 
         });
 
@@ -128,6 +132,7 @@ class OrderController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
+     *
      * @return Show
      */
     protected function detail($id)
@@ -201,17 +206,17 @@ class OrderController extends Controller
         // Laravel 5.5 之后 validate 方法可以返回校验过的值
         $data = $this->validate($request, [
             'express_company' => ['required'],
-            'express_no'      => ['required'],
+            'express_no' => ['required'],
         ], [], [
             'express_company' => '物流公司',
-            'express_no'      => '物流单号',
+            'express_no' => '物流单号',
         ]);
         // 将订单发货状态改为已发货，并存入物流信息
         $order->update([
             'ship_status' => Order::SHIP_STATUS_DELIVERED,
             // 我们在 Order 模型的 $casts 属性里指明了 ship_data 是一个数组
             // 因此这里可以直接把数组传过去
-            'ship_data'   => $data,
+            'ship_data' => $data,
         ]);
 
         // 返回上一页
