@@ -84,13 +84,11 @@ class Product extends Model
 
     public function setPriceAttribute($price)
     {
-
         $this->attributes['price'] = $price * 10;
-
     }
 
     public function getPriceAttribute($price)
     {
-        return $price / 10;
+        return sprintf("%01.2f", $price / 10);
     }
 }
