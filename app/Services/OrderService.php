@@ -55,7 +55,7 @@ class OrderService
                 $item->save();
                 $totalAmount += $sku->price * $data['amount'];
                 if ($sku->decreaseStock($data['amount']) <= 0) {
-                    throw new InvalidRequestException('该商品库存不足');
+                    throw new InvalidRequestException([],'该商品库存不足');
                 }
             }
             if ($coupon) {
@@ -67,7 +67,7 @@ class OrderService
                 $order->couponCode()->associate($coupon);
                 // 增加优惠券的用量，需判断返回值
                 if ($coupon->changeUsed() <= 0) {
-                    throw new InvalidRequestException('该优惠券已被兑完');
+                    throw new InvalidRequestException([],'该优惠券已被兑完');
                 }
             }
             // 更新订单总金额

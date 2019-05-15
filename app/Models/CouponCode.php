@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\InvalidRequestException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -12,7 +13,7 @@ class CouponCode extends Model
     const TYPE_PERCENT = 'percent';
 
     public static $typeMap = [
-        self::TYPE_FIXED   => '固定金额',
+        self::TYPE_FIXED => '固定金额',
         self::TYPE_PERCENT => '比例',
     ];
 
@@ -41,51 +42,51 @@ class CouponCode extends Model
         $str = '';
 
         if ($this->min_amount > 0) {
-            $str = '满'.str_replace('.00', '', $this->min_amount);
+            $str = '满' . str_replace('.00', '', $this->min_amount);
         }
         if ($this->type === self::TYPE_PERCENT) {
-            return $str.'优惠'.str_replace('.00', '', $this->value).'%';
+            return $str . '优惠' . str_replace('.00', '', $this->value) . '%';
         }
 
-        return $str.'减'.str_replace('.00', '', $this->value);
+        return $str . '减' . str_replace('.00', '', $this->value);
     }
 
     public function checkAvailable(User $user, $orderAmount = null)
     {
         if (!$this->enabled) {
-            throw new CouponCodeUnavailableException('优惠券不存在');
+            throw new InvalidRequestException([], '优惠券不存在');
         }
 
         if ($this->total - $this->used <= 0) {
-            throw new CouponCodeUnavailableException('该优惠券已被兑完');
+            throw new InvalidRequestException([], '该优惠券已被兑完');
         }
 
         if ($this->not_before && $this->not_before->gt(Carbon::now())) {
-            throw new CouponCodeUnavailableException('该优惠券现在还不能使用');
+            throw new InvalidRequestException([], '该优惠券现在还不能使用');
         }
 
         if ($this->not_after && $this->not_after->lt(Carbon::now())) {
-            throw new CouponCodeUnavailableException('该优惠券已过期');
+            throw new InvalidRequestException([], '该优惠券已过期');
         }
 
         if (!is_null($orderAmount) && $orderAmount < $this->min_amount) {
-            throw new CouponCodeUnavailableException('订单金额不满足该优惠券最低金额');
+            throw new InvalidRequestException([], '订单金额不满足该优惠券最低金额');
         }
 
         $used = Order::where('user_id', $user->id)
             ->where('coupon_code_id', $this->id)
-            ->where(function($query) {
-                $query->where(function($query) {
+            ->where(function ($query) {
+                $query->where(function ($query) {
                     $query->whereNull('paid_at')
                         ->where('closed', false);
-                })->orWhere(function($query) {
+                })->orWhere(function ($query) {
                     $query->whereNotNull('paid_at')
                         ->where('refund_status', '!=', Order::REFUND_STATUS_SUCCESS);
                 });
             })
             ->exists();
         if ($used) {
-            throw new CouponCodeUnavailableException('你已经使用过这张优惠券了');
+            throw new InvalidRequestException([], '你已经使用过这张优惠券了');
         }
     }
 
