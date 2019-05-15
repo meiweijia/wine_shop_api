@@ -80,6 +80,8 @@ class UserController extends Controller
     {
         $grid = new Grid(new User);
 
+        $grid->model()->orderBy('updated_at', 'desc');
+
         $grid->id('Id');
         $grid->name('用户名');
         $grid->avatar('头像');
