@@ -150,7 +150,8 @@ class ProductController extends Controller
         $form->text('long_title', '商品长名称');
         $form->textarea('description', '商品描述');
         $form->image('image', '封面图');
-        $form->multipleImage('carousel', '轮播图')->removable()->sortable();;
+        $form->multipleImage('carousel', '轮播图')->removable()->sortable();
+        $form->editor('detail', '详情');
         $form->radio('on_sale', '上架')->options(['1' => '是', '0' => '否'])->default('1');
 
         $form->hasMany('skus', '商品 SKU', function (Form\NestedForm $form) {

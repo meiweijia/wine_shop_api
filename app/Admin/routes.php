@@ -12,6 +12,8 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('admin.home');
 
+    $router->post('/upload','HomeController@upload')->name('admin.home.upload');
+
     $router->resource('users', 'UserController')->names('admin.users');
     $router->resource('products', 'ProductController')->names('admin.products');
     $router->resource('orders', 'OrderController')->names('admin.orders');
