@@ -18,7 +18,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () use ($router)
 
     Route::get('banners', 'BannerController@index')->name('banners.index');
 
-    Route::get('users/auth', 'UserController@auth')->name('users.auth');
+    Route::post('users/auth', 'UserController@auth')->name('users.auth');
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::resource('user_addresses', 'UserAddressController')->except(['create', 'show', 'edit']);
