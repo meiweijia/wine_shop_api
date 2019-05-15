@@ -81,6 +81,8 @@ class ProductController extends Controller
     {
         $grid = new Grid(new Product);
 
+        $grid->model()->orderBy('updated_at', 'desc');
+
         $grid->id('ID')->sortable();
         $grid->title('商品名称');
         $grid->image('封面图')->image();
