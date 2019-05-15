@@ -9,7 +9,7 @@ use Overtrue\LaravelWeChat\Facade as EasyWechat;
 
 class UserController extends ApiController
 {
-    public function register(Request $request)
+    public function auth(Request $request)
     {
         $code = $request->input('code');
         $name = $request->input('nickName');
@@ -22,11 +22,17 @@ class UserController extends ApiController
             return $this->error([], '授权失败');
         }
 
-        $user = new User();
+
+        $user = User::query()->where('openid', $openid)->first();
+
+        if (!$user) {
+            $user = new User();
+            $user->openid = $openid;
+            $user->password = bcrypt(mt_rand(pow(10, 5), pow(10, 6) - 1));
+        }
+
         $user->name = $name;
         $user->avatar = $avatar;
-        $user->openid = $openid;
-        $user->password = bcrypt(mt_rand(pow(10, 5), pow(10, 6) - 1));
         $user->api_token = Str::random(64);
         $user->save();
 
