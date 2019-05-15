@@ -84,7 +84,6 @@ class UserController extends Controller
 
         $grid->id('Id');
         $grid->name('用户名');
-        $grid->avatar('头像');
         $grid->email('Email');
         $grid->email_verified_at('已验证邮箱')->display(function ($value) {
             return $value ? '是' : '否';
