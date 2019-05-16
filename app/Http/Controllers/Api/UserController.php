@@ -9,19 +9,21 @@ use Overtrue\LaravelWeChat\Facade as EasyWechat;
 
 class UserController extends ApiController
 {
+
     public function auth(Request $request)
     {
-        $code = $request->input('code');
-        $name = $request->input('nickName');
-        $avatar = $request->input('avatarUrl');
+        $this->checkPar($request,[
+            'code' => 'required',
+            'nickName' => 'required',
+            'avatarUrl' => 'required',
+        ]);
 
         $miniProgram = EasyWechat::miniProgram();
-        $session = $miniProgram->auth->session($code);
+        $session = $miniProgram->auth->session($request->input('code'));
 
         if (!$openid = $session['openid']) {
             return $this->error([], '授权失败');
         }
-
 
         $user = User::query()->where('openid', $openid)->first();
 
@@ -31,8 +33,8 @@ class UserController extends ApiController
             $user->password = bcrypt(mt_rand(pow(10, 5), pow(10, 6) - 1));
         }
 
-        $user->name = $name;
-        $user->avatar = $avatar;
+        $user->name = $request->input('nickName');
+        $user->avatar = $request->input('avatarUrl');
         $user->api_token = Str::random(64);
         $user->save();
 
