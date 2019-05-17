@@ -17,8 +17,11 @@ class UserAddressController extends ApiController
     {
         $result = $request->user()->addresses()->create($request->only([
             'province',
+            'province_code',
             'city',
+            'city_code',
             'district',
+            'district_code',
             'address',
             'zip',
             'contact_name',
