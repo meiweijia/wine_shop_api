@@ -30,6 +30,10 @@ class UserAddressController extends ApiController
         return $this->success($result);
     }
 
+    public function show(UserAddress $userAddress){
+        return $userAddress;
+    }
+
     public function update(UserAddressRequest $request, UserAddress $userAddress)
     {
         $this->authorize('own', $userAddress);

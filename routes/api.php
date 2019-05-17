@@ -21,7 +21,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () use ($router)
     Route::post('users/auth', 'UserController@auth')->name('users.auth');
 
     Route::group(['middleware' => 'auth:api'], function () {
-        Route::resource('user_addresses', 'UserAddressController')->except(['create', 'show', 'edit']);
+        Route::resource('user_addresses', 'UserAddressController')->except(['create', 'edit']);
 
         Route::resource('cart', 'CartController')->only(['index', 'store', 'destroy']);
         Route::get('cart/flush', 'CartController@flush')->name('cart.flush');
