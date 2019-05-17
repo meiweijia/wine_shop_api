@@ -9,10 +9,12 @@ class UserAddressRequest extends BaseRequest
     {
         return [
             'province'      => 'required',
+            'province_code' => 'required',
             'city'          => 'required',
+            'city_code'     => 'required',
             'district'      => 'required',
+            'district_code' => 'required',
             'address'       => 'required',
-            'zip'           => 'required',
             'contact_name'  => 'required',
             'contact_phone' => 'required',
         ];
