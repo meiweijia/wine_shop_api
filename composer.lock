@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84c1be7310f02dabe207d13ac415db87",
+    "content-hash": "b62ebeeb9c43592bf6bc2ed1422c5f25",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -987,6 +987,53 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "kubill/lbs",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kubill/lbs.git",
+                "reference": "7c79e67304036dd702c044aa58781fa551e9a371"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kubill/lbs/zipball/7c79e67304036dd702c044aa58781fa551e9a371",
+                "reference": "7c79e67304036dd702c044aa58781fa551e9a371",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3",
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kubill\\Lbs\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "GeoCoder": "Kubill\\Lbs\\Facades\\GeoCoder"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kubill\\Lbs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "kubill",
+                    "email": "meiweijia@gmail.com"
+                }
+            ],
+            "description": "A lbs library,Support multiple service providers.",
+            "time": "2019-05-17T07:03:41+00:00"
         },
         {
             "name": "laravel-admin-ext/wang-editor",
