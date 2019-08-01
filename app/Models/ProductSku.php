@@ -32,11 +32,11 @@ class ProductSku extends Model
 
     public function setPriceAttribute($price)
     {
-        $this->attributes['price'] = $price * 10;
+        $this->attributes['price'] = $price * 100;
     }
 
     public function getPriceAttribute($price)
     {
-        return sprintf("%01.2f", $price / 10);
+        return sprintf("%01.2f", $price / 100);
     }
 }
